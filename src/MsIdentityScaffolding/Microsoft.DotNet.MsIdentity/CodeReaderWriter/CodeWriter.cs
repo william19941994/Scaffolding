@@ -119,7 +119,7 @@ namespace Microsoft.DotNet.MsIdentity.CodeReaderWriter
                     arguments.Add(tfm);
                 }
 
-                Console.Write($"\nAdding package {packageName}");
+                Console.Write($"\nAdding package {packageName} . . . ");
 
                 var result = Command.CreateDotNet(
                     "add",
@@ -127,8 +127,6 @@ namespace Microsoft.DotNet.MsIdentity.CodeReaderWriter
                     .OnErrorLine(e => errors.Add(e))
                     .OnOutputLine(o => output.Add(o))
                     .Execute();
-
-                Console.Write(" . . . ");
 
                 if (result.ExitCode != 0)
                 {

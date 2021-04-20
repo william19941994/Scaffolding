@@ -14,7 +14,6 @@ using Microsoft.DotNet.MsIdentity.DeveloperCredentials;
 using Microsoft.DotNet.MsIdentity.MicrosoftIdentityPlatformApplication;
 using Microsoft.DotNet.MsIdentity.Project;
 using Newtonsoft.Json.Linq;
-using Microsoft.CodeAnalysis;
 using ProjectDescription = Microsoft.DotNet.MsIdentity.Project.ProjectDescription;
 
 namespace Microsoft.DotNet.MsIdentity
@@ -87,7 +86,6 @@ namespace Microsoft.DotNet.MsIdentity
             //for now, update project command is handlded seperately.
             //TODO: switch case to handle all the different commands.
             ApplicationParameters? applicationParameters = null;
-
             switch (CommandName)
             {
                 case Commands.UPDATE_PROJECT_COMMAND:
@@ -130,6 +128,13 @@ namespace Microsoft.DotNet.MsIdentity
                 case Commands.UNREGISTER_APPLICATION_COMMAND:
                     await UnregisterApplication(tokenCredential, projectSettings.ApplicationParameters);
                     return null;
+                case Commands.ADD_CLIENT_SECRET:
+                    applicationParameters = await ReadMicrosoftIdentityApplication(
+                                                    tokenCredential,
+                                                    projectSettings.ApplicationParameters);
+                    await AddClientSecret(tokenCredential, applicationParameters);
+                    return applicationParameters;
+
             }
             // Case of a blazorwasm hosted application. We need to create two applications:
             // - the hosted web API
@@ -165,7 +170,7 @@ namespace Microsoft.DotNet.MsIdentity
             if (!projectSettings.ApplicationParameters.HasAuthentication)
             {
                 Console.WriteLine($"Authentication is not enabled yet in this project. An app registration will " +
-                  $"be created, but the tool does not add the code yet (work in progress). ");
+                $"be created, but the tool does not add the code yet (work in progress). ");
                 EnableAuthInProject(projectDescription, projectSettings.ApplicationParameters);
             }
 
