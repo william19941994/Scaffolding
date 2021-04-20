@@ -12,7 +12,7 @@ namespace Microsoft.DotNet.MsIdentity
         /// <summary>
         /// Path to csproj file 
         /// </summary>
-        public string? ProjectCsProjPath { get; set; }
+        public string? ProjectFilePath{ get; set; }
 
         /// <summary>
         /// Path to appsettings.json file
@@ -148,7 +148,7 @@ namespace Microsoft.DotNet.MsIdentity
                 Unregister = Unregister,
                 Username = Username,
                 ProjectPath = ProjectPath,
-                ProjectCsProjPath = ProjectCsProjPath,
+                ProjectFilePath = ProjectFilePath,
                 AppSettingsFilePath = AppSettingsFilePath,
                 WebApiClientId = WebApiClientId,
                 AppIdUri = AppIdUri,

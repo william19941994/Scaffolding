@@ -144,7 +144,7 @@ namespace Microsoft.DotNet.MsIdentity.Tool
                 name: Commands.LIST_AAD_APPS_COMMAND,
                 description: "Lists AAD Applications for a given tenant/username.")
             {
-                TenantOption(), UsernameOption(), JsonOption(), ProjectPathOption()
+                TenantOption(), UsernameOption(), JsonOption()
             };
 
         private static Command ListServicePrincipalsCommand()=>
@@ -152,7 +152,7 @@ namespace Microsoft.DotNet.MsIdentity.Tool
                 name: Commands.LIST_SERVICE_PRINCIPALS_COMMAND,
                 description: "Lists AAD Service Principals.")
             {
-                TenantOption(), UsernameOption(), JsonOption(), ProjectPathOption()
+                TenantOption(), UsernameOption(), JsonOption()
             };
 
         private static Command ListTenantsCommand()=>
@@ -169,7 +169,7 @@ namespace Microsoft.DotNet.MsIdentity.Tool
                 description: "Register an AAD/AAD B2C application in Azure and updates .NET application." + 
                              "\n\t- Updates the appsettings.json file.")
             {
-                TenantOption(), UsernameOption(), JsonOption(), ClientIdOption(), ClientSecretOption(), AppIdUriOption(), ApiClientIdOption(), SusiPolicyIdOption(), ProjectPathOption()
+                TenantOption(), UsernameOption(), JsonOption(), ClientIdOption(), ClientSecretOption(), AppIdUriOption(), ApiClientIdOption(), SusiPolicyIdOption(), ProjectPathOption(), ProjectFilePathOption()
             };
 
         private static Command UpdateProjectCommand()=>
@@ -180,7 +180,7 @@ namespace Microsoft.DotNet.MsIdentity.Tool
                              "\n\t- Updates the Startup.cs file." + 
                              "\n\t- Updates the user secrets.")
             {
-                TenantOption(), UsernameOption(), JsonOption(), ProjectPathOption(), ClientIdOption(), CallsGraphOption(), CallsDownstreamApiOption(), UpdateUserSecrets()
+                TenantOption(), UsernameOption(), JsonOption(), ProjectPathOption(), ClientIdOption(), CallsGraphOption(), CallsDownstreamApiOption(), UpdateUserSecrets(), ProjectFilePathOption()
             };
 
         private static Command UpdateApplicationCommand() =>
@@ -189,12 +189,13 @@ namespace Microsoft.DotNet.MsIdentity.Tool
                 description: "Update an AAD/AAD B2C application in Azure." +
                              "\n\t- Updates the appsettings.json file.")
             {
-                TenantOption(), UsernameOption(), JsonOption(), AppIdUriOption(), ClientIdOption(), ProjectPathOption(), 
+                TenantOption(), UsernameOption(), JsonOption(), AppIdUriOption(), ClientIdOption()
             };
 
         private static Command UnregisterApplicationCommand() =>
             new Command(
                 name: Commands.UNREGISTER_APPLICATION_COMMAND,
+
                 description: "Unregister an AAD/AAD B2C application in Azure." +
                              "\n\t- Updates the appsettings.json file.")
             {
@@ -211,7 +212,7 @@ namespace Microsoft.DotNet.MsIdentity.Tool
 
         private static Option CallsGraphOption()=>
             new Option<bool>(
-                aliases: new [] {"-cg", "--calls-graph"},
+                aliases: new [] {"--calls-graph"},
                 description: "App registration calls microsoft graph.")
             {
                 IsRequired = false
@@ -219,7 +220,7 @@ namespace Microsoft.DotNet.MsIdentity.Tool
 
         private static Option CallsDownstreamApiOption()=>
             new Option<bool>(
-                aliases: new [] {"-cda", "--calls-downstream-api"},
+                aliases: new [] {"--calls-downstream-api"},
                 description: "App registration calls downstream api.")
             {
                 IsRequired = false
@@ -227,7 +228,7 @@ namespace Microsoft.DotNet.MsIdentity.Tool
 
         private static Option UpdateUserSecrets()=>
             new Option<bool>(
-                aliases: new [] {"-uus", "--update-user-secrets"},
+                aliases: new [] {"--update-user-secrets"},
                 description: "Add secrets to user secrets.json file." + 
                              "\n\t- Using dotnet-user-secrets to init and set user secrets.")
             {
@@ -236,7 +237,7 @@ namespace Microsoft.DotNet.MsIdentity.Tool
 
         private static Option ClientIdOption()=>
             new Option<string>(
-                aliases: new [] {"-ci", "--client-id"},
+                aliases: new [] {"--client-id"},
                 description: "Client ID of an existing application from which to update the code." +
                              "\n\tThis is used when you don't want to register a new app, but want to configure the code from an existing application (which can also be updated by the tool if needed)." +
                              "\n\t- You might want to also pass-in the --client-secret if you know it.")
@@ -246,7 +247,7 @@ namespace Microsoft.DotNet.MsIdentity.Tool
 
         private static Option ClientSecretOption()=>
             new Option<string>(
-                aliases: new [] {"-cs", "--client-secret"},
+                aliases: new [] {"--client-secret"},
                 description: "Client secret to use as a client credential.")
             {
                 IsRequired = false
@@ -259,10 +260,18 @@ namespace Microsoft.DotNet.MsIdentity.Tool
             {
                 IsRequired = false
             };
+
+        private static Option ProjectFilePathOption()=>
+            new Option<string>(
+                aliases: new [] {"--project-file-path"},
+                description: "When specified, will analyze the application specified by the csproj file. Otherwise analyzes the csproj in the current directory..")
+            {
+                IsRequired = false
+            };
         
         private static Option AppIdUriOption()=>
             new Option<string>(
-                aliases: new [] {"-aiu", "--app-id-uri"},
+                aliases: new [] {"--app-id-uri"},
                 description: "The App ID Uri for the blazorwasm hosted API. It's only used on the case of a blazorwasm hosted application (named after the --app-id-uri  blazorwasm template parameter).")
             {
                 IsRequired = false
@@ -270,7 +279,7 @@ namespace Microsoft.DotNet.MsIdentity.Tool
 
         private static Option ApiClientIdOption()=>
             new Option<string>(
-                aliases: new [] {"-aci", "--api-client-id"},
+                aliases: new [] {"--api-client-id"},
                 description: "Client ID of the blazorwasm hosted web API." +
                              "\nThis is only used on the case of a blazorwasm hosted application where you only want to configure the code (named after the --api-client-id blazorwasm  template parameter).")
             {
@@ -278,7 +287,7 @@ namespace Microsoft.DotNet.MsIdentity.Tool
             };
         private static Option SusiPolicyIdOption()=>
             new Option<string>(
-                aliases: new [] {"-sp", "--susi-policy-id"},
+                aliases: new [] {"--susi-policy-id"},
                 description: "Sign-up/Sign-in policy required for configurating a B2C application from code that was created for AAD.")
             {
                 IsRequired = false

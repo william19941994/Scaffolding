@@ -635,8 +635,11 @@ namespace Microsoft.DotNet.MsIdentity.MicrosoftIdentityPlatformApplication
             effectiveApplicationParameters.Instance = isB2C
                 ? $"https://{effectiveApplicationParameters.Domain1}.b2clogin.com/"
                 : originalApplicationParameters.Instance;
-
-            effectiveApplicationParameters.PasswordCredentials.AddRange(application.PasswordCredentials.Select(p => p.Hint + "******************"));
+            if (effectiveApplicationParameters.PasswordCredentials is List<string>)
+            {
+                ((List<string>) effectiveApplicationParameters.PasswordCredentials).AddRange(application.PasswordCredentials.Select(p => p.Hint + "******************"));
+            }
+           
             if (application.Spa != null && application.Spa.RedirectUris != null)
             {
                 effectiveApplicationParameters.WebRedirectUris.AddRange(application.Spa.RedirectUris);

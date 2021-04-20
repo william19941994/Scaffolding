@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -79,7 +80,10 @@ namespace Microsoft.DotNet.MsIdentity
                 }
 
                 if (applicationList.Any())
-                { 
+                {
+                    //order list by created date.
+                    applicationList = applicationList.OrderByDescending(app => app.CreatedDateTime).ToList();
+
                     if (ProvisioningToolOptions.Json)
                     {
                         outputJsonString = JsonSerializer.Serialize(applicationList);   
@@ -117,7 +121,7 @@ namespace Microsoft.DotNet.MsIdentity
                     }
                 }
                 if (servicePrincipalList.Any())
-                { 
+                {
                     if (ProvisioningToolOptions.Json)
                     {
                         outputJsonString = JsonSerializer.Serialize(servicePrincipalList);
