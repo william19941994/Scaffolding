@@ -46,6 +46,8 @@ namespace Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore
             {
                 DisplayPropertyName = displayPropertyCandidate.Name;
             }
+            // If there is a [DisplayColumn] attribute on target type. use it instead.
+            // var colName = navigation.TargetEntityType.GetAnnotation("DisplayColumn");
         }
 
         public string AssociationPropertyName { get; set; }
